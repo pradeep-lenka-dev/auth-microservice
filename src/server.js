@@ -4,9 +4,11 @@ const cors =require ('cors');
 const morgan = require('morgan');
 const conectDB = require('./config/db')
 const router = require ('./userRoutes')
+const authRouter = require ('./authRoutes')
 
 
 const app = express();
+
 
 //Middlewar
 app.use(express.json());
@@ -14,6 +16,7 @@ app.use(cors());
 app.use(morgan('dev'));
 
 app.use('/api',router)
+app.use('/api/auth',authRouter)
 app.get("/", (req, res) => {
     res.json({ message: "We have mounted the voulme to running container" });
   });

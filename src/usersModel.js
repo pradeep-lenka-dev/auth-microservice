@@ -36,7 +36,13 @@ userSchema.pre("save",async function (next){
 
 })
 
-userSchema.methods.comparePassword =  function (enterdPassword){
+userSchema.methods.comparePassword =  async function (enterdPassword){
+    console.log("🚀 ~ enterdPassword:", enterdPassword)
+    if (!this.password) {
+        throw new Error("Password is not set");
+    }
+    const hashedPassword = await bcrypt.hash(this.password, 10);
+    console.log("🚀 ~ hashedPassword:", hashedPassword);
     return bcrypt.compare(enterdPassword,this.password)
 }
 
