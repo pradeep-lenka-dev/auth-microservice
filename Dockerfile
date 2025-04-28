@@ -14,12 +14,8 @@ RUN npm install
 COPY . .
 
 # Expose the port the app runs on
-EXPOSE 3000
+EXPOSE 8000
 
-# Add Redis service
-RUN apk add --no-cache redis
 
-# Start Redis in the background
-RUN mkdir -p /var/lib/redis && chown -R redis:redis /var/lib/redis
 # Command to run the application
 CMD ["npm", "start"]

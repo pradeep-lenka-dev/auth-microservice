@@ -17,9 +17,9 @@ app.use(morgan('dev'));
 
 app.use('/api',router)
 app.use('/api/auth',authRouter)
-app.get("/", (req, res) => {
-    res.json({ message: "We have mounted the voulme to running container" });
-  });
+app.get('/health', (req, res) => {
+  res.status(200).send('Healthy');
+});
 conectDB()
-const PORT = process.env.PORT || 5000;
-app.listen(PORT,()=> console.log(`server start on ${PORT}`))
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, '0.0.0.0', () => console.log(`server start on ${PORT}`));

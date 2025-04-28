@@ -2,11 +2,12 @@ const User = require('./usersModel');
 const bcrypt = require('bcryptjs');
 const cryptojs = require('crypto-js');
 const nodemailer = require('nodemailer');
-const Redis = require('ioredis');
-const redis = new Redis({
-    host: process.env.REDIS_HOST || "redis",  // <-- use service name, not localhost
-    port: process.env.REDIS_PORT || 6379,
-  })
+const OTP = require('./otpModel');
+// const Redis = require('ioredis');
+// const redis = new Redis({
+//     host: process.env.REDIS_HOST || "redis",  // <-- use service name, not localhost
+//     port: process.env.REDIS_PORT || 6379,
+//   })
 const SECRET_KEY = process.env.SECRET_KEY;
 
 class authController {  
@@ -20,7 +21,10 @@ class authController {
             if (!user) return res.status(400).json({ message: "User not found" });
             const otp =   Math.floor(100000 + Math.random() * 900000);;
             const encryptedOtp = cryptojs.AES.encrypt(otp.toString(), SECRET_KEY).toString();
-            await redis.set(email, encryptedOtp, 'EX', 60);
+            await OTP.findOneAndUpdate({email}, { otp: encryptedOtp }, { upsert: true, new: true });
+
+            await OTP.findOneAndUpdate({email}, { otp: encryptedOtp }, { upsert: true, new: true });
+            // await redis.set(email, encryptedOtp, 'EX', 60);
             const isMailSent = await this.sendMail(email, otp);
             if (isMailSent) {
                 return res.status(200).json({ message: "OTP sent to your email" });
