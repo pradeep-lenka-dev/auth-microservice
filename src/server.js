@@ -12,7 +12,12 @@ const app = express();
 
 //Middlewar
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: 'https://aetherauth.netlify.app/', // or your frontend origin
+  credentials: true
+}));
+
 app.use(morgan('dev'));
 
 app.use('/api',router)
