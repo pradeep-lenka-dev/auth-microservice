@@ -15,8 +15,10 @@ app.use(express.json());
 // app.use(cors());
 
 app.use(cors({
-  origin: 'https://aetherauth.netlify.app/', // or your frontend origin
-  credentials: true
+   origin: 'https://aetherauth.netlify.app', // ✅ NO trailing slash
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(morgan('dev'));
